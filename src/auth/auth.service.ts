@@ -45,6 +45,6 @@ export class AuthService {
         const jwt = await this.tokenService.createJwt(user._id)
         response.cookie('jwt', jwt, { httpOnly: true })
         response.cookie('user', user.id, { httpOnly: true })
-        return 'Successs'
+        return user
     }
 }

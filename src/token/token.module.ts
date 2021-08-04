@@ -7,7 +7,7 @@ import { TokenService } from './token.service'
     providers: [TokenService],
     imports: [
         JwtModule.register({
-            secret: process.env.SECRET_KEY,
+            secret: process.env.SECRET_KEY || 'kadsas',
             signOptions: { expiresIn: '24h' },
         }),
         UserModule,

@@ -9,6 +9,9 @@ export class Category {
 
     @Prop({ type: String, required: true, unique: true })
     description: string
+
+    @Prop([String])
+    followers: string[]
 }
 
 export const CategorySchema = SchemaFactory.createForClass(Category)
