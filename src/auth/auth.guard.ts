@@ -11,7 +11,7 @@ import { Observable } from 'rxjs'
 export class AuthGuard implements CanActivate {
     constructor(private jwtService: JwtService) {}
     canActivate(
-        context: ExecutionContext,
+        context: ExecutionContext
     ): boolean | Promise<boolean> | Observable<boolean> {
         const req = context.switchToHttp().getRequest()
         try {
@@ -20,10 +20,14 @@ export class AuthGuard implements CanActivate {
                 throw new UnauthorizedException('Auth to interact with forks')
             }
             //В идеале получать юзера так, но у меня почему-то падает на сроке с verify, поэтому я отправляю id usera in cookies
-            // const user = this.jwtService.verify(jwt)
-            // req.user = user
+            const user = this.jwtService.verify(jwt, {
+                secret: process.env.SECRET_KEY,
+            })
+            req.user = user
             return true
         } catch (error) {
+            console.log(error)
+
             throw new UnauthorizedException('Auth to interact with forks')
         }
     }

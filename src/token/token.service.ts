@@ -14,7 +14,10 @@ export class TokenService {
         return bcrypt.compare(clearPassword, hashPassword)
     }
 
-    createJwt(id: string): Promise<string> {
-        return this.jwtService.signAsync({ id })
+    async createJwt(id: string): Promise<string> {
+        return this.jwtService.signAsync(
+            { id },
+            { secret: process.env.SECRET_KEY, expiresIn: '1h' }
+        )
     }
 }

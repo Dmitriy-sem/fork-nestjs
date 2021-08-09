@@ -22,7 +22,7 @@ export class ForkService {
         private categoryModel: Model<CategoryDocument>,
         @InjectModel(User.name) private userModdel: Model<UserDocument>,
         private eventEmitter: EventEmitter2,
-        private emailService: EmailService,
+        private emailService: EmailService
     ) {}
 
     async getAll(): Promise<ForkDocument[]> {
@@ -38,8 +38,8 @@ export class ForkService {
     async handleForkCreatedEvent(
         followers: string[],
         fork: IFork,
-        categoryName: string,
-    ) {
+        categoryName: string
+    ): Promise<void> {
         const emailList = []
         for (const follower of followers) {
             const user = await this.userModdel.findById(follower)
@@ -51,9 +51,9 @@ export class ForkService {
 
     async create(
         forkDto: CreateForkDto,
-        request: Request,
+        request: Request
     ): Promise<ForkDocument> {
-        const owner = request.cookies['user']
+        const owner = request.user.id
         const categoryItem = await this.categoryModel.findOne({
             title: forkDto.category,
         })
@@ -62,13 +62,17 @@ export class ForkService {
             'fork.created',
             categoryItem.followers,
             newFork,
-            forkDto.category,
+            forkDto.category
         )
         return this.forkModel.create(newFork)
     }
 
     async update(id: string, forkDto: UpdateForkDto): Promise<ForkDocument> {
-        return this.forkModel.findByIdAndUpdate(id, forkDto)
+        const categoryItem = await this.categoryModel.findOne({
+            title: forkDto.category,
+        })
+        const updatedFork = { ...forkDto, category: categoryItem._id }
+        return this.forkModel.findByIdAndUpdate(id, updatedFork)
     }
 
     async remove(id: string): Promise<ForkDocument> {

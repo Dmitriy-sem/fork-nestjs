@@ -4,7 +4,11 @@ import { IFork } from 'src/fork/fork.type'
 
 @Injectable()
 export class EmailService {
-    async sendMail(toEmail: string, fork: IFork, categoryName: string) {
+    async sendMail(
+        toEmail: string,
+        fork: IFork,
+        categoryName: string,
+    ): Promise<void> {
         const transporter = nodemailer.createTransport({
             host: 'smtp.gmail.com',
             port: 587,

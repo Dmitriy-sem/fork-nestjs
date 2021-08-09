@@ -12,11 +12,16 @@ export class CategoryService {
         private categoryModel: Model<CategoryDocument>,
     ) {}
 
-    async createCategory(data: CreateCategoryDto) {
+    async createCategory(
+        data: CreateCategoryDto,
+    ): Promise<Category & Document> {
         return this.categoryModel.create(data)
     }
 
-    async followCategory(categoryName: string, req: Request) {
+    async followCategory(
+        categoryName: string,
+        req: Request,
+    ): Promise<Category & Document> {
         const user = req.cookies['user']
         return this.categoryModel.findOneAndUpdate(
             { title: categoryName },
