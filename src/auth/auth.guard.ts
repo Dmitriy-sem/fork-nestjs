@@ -23,7 +23,7 @@ export class AuthGuard implements CanActivate {
             const user = this.jwtService.verify(jwt, {
                 secret: process.env.SECRET_KEY,
             })
-            req.user = user
+            req.user = userт
             return true
         } catch (error) {
             console.log(error)

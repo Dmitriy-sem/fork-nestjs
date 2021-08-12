@@ -7,7 +7,6 @@ import { ForkModule } from './fork/fork.module'
 import { ConfigModule } from '@nestjs/config'
 import { UserModule } from './user/user.module'
 import { TokenModule } from './token/token.module'
-import { EventEmitterModule } from '@nestjs/event-emitter'
 
 @Module({
     imports: [
@@ -20,7 +19,6 @@ import { EventEmitterModule } from '@nestjs/event-emitter'
         AuthModule,
         UserModule,
         TokenModule,
-        EventEmitterModule.forRoot(),
     ],
     controllers: [AppController],
     providers: [AppService],
