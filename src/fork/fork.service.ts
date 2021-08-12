@@ -10,13 +10,16 @@ import { UpdateForkDto } from './dto/update-fork.dto'
 import { Fork, ForkDocument } from './schemas/fork.schema'
 import { Request } from 'express'
 import { IFork } from './fork.type'
+import { TokenDocument } from 'src/token/schemas/token.schema'
+import { TokenService } from 'src/token/token.service'
 
 @Injectable()
 export class ForkService {
     constructor(
         @InjectModel(Fork.name) private forkModel: Model<ForkDocument>,
         @InjectModel(Category.name)
-        private categoryModel: Model<CategoryDocument>
+        private categoryModel: Model<CategoryDocument>,
+        private tokenService: TokenService
     ) {}
 
     async getAll(): Promise<ForkDocument[]> {
@@ -32,7 +35,9 @@ export class ForkService {
         forkDto: CreateForkDto,
         request: Request
     ): Promise<ForkDocument> {
-        const owner = request.user.id
+        const jwt = request.cookies['jwt']
+        const userToken = await this.tokenService.getUserByToken(jwt)
+        const owner = userToken._id
         const categoryItem = await this.categoryModel.findOne({
             title: forkDto.category,
         })

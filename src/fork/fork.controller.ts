@@ -4,8 +4,8 @@ import {
     Delete,
     Get,
     Param,
+    Patch,
     Post,
-    Put,
     Req,
     UseGuards,
 } from '@nestjs/common'
@@ -28,7 +28,7 @@ export class ForkController {
 
     @Get(':category')
     getByCategory(
-        @Param('category') category: string,
+        @Param('category') category: string
     ): Promise<ForkDocument[]> {
         return this.forkService.getByCategory(category)
     }
@@ -36,15 +36,15 @@ export class ForkController {
     @Post()
     create(
         @Body() body: CreateForkDto,
-        @Req() req: Request,
+        @Req() req: Request
     ): Promise<ForkDocument> {
         return this.forkService.create(body, req)
     }
 
-    @Put(':id')
+    @Patch(':id')
     update(
         @Body() body: UpdateForkDto,
-        @Param('id') id: string,
+        @Param('id') id: string
     ): Promise<ForkDocument> {
         return this.forkService.update(id, body)
     }

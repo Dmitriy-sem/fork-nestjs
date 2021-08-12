@@ -7,6 +7,12 @@ import {
 import { JwtService } from '@nestjs/jwt'
 import { Observable } from 'rxjs'
 
+type userFromCookie = {
+    id: string
+    iat: Date
+    exp: Date
+}
+
 @Injectable()
 export class AuthGuard implements CanActivate {
     constructor(private jwtService: JwtService) {}
@@ -19,12 +25,10 @@ export class AuthGuard implements CanActivate {
             if (!jwt) {
                 throw new UnauthorizedException('Auth to interact with forks')
             }
-            //В идеале получать юзера так, но у меня почему-то падает на сроке с verify, поэтому я отправляю id usera in cookies
-            const user = this.jwtService.verify(jwt, {
+            const user: userFromCookie = this.jwtService.verify(jwt, {
                 secret: process.env.SECRET_KEY,
             })
-            req.user = userт
-            return true
+            return !!user
         } catch (error) {
             console.log(error)
 

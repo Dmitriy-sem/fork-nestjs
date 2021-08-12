@@ -12,7 +12,7 @@ import { TokenModule } from './token/token.module'
     imports: [
         ConfigModule.forRoot({ envFilePath: '.env' }),
         MongooseModule.forRoot(process.env.MONGO_URI, {
-            useFindAndModify: true,
+            useCreateIndex: true,
         }),
         AuthModule,
         ForkModule,

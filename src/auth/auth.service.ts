@@ -47,6 +47,7 @@ export class AuthService {
             )
         }
         const jwt = await this.tokenService.createJwt(user._id)
+        this.tokenService.writeTokenToDb(user, jwt)
         response.cookie('jwt', jwt, { httpOnly: true })
         return user
     }
