@@ -17,22 +17,22 @@ export class AuthService {
         const { username, password, email } = newUserDto
         const isExist = await this.userService.findUser(username)
 
-        if (!isExist) {
-            const hashedPassword = await this.tokenService.hash(password)
-            const newUserData = { username, email, password: hashedPassword }
-            return this.userService.createUser(newUserData)
+        if (isExist) {
+            throw new HttpException(
+                'User with this username is already exists',
+                HttpStatus.BAD_REQUEST
+            )  
         }
-        throw new HttpException(
-            'User with this username is already exists',
-            HttpStatus.BAD_REQUEST
-        )
+        const hashedPassword = await this.tokenService.hash(password)
+        const newUserData = { username, email, password: hashedPassword }
+        return this.userService.createUser(newUserData)
+        
     }
 
     async loginUser(
-        userDto: LoginUserDto,
+        { username, password }: LoginUserDto,
         response: Response
     ): Promise<UserDocument> {
-        const { username, password } = userDto
         const user = await this.userService.findUser(username)
         if (!user) {
             throw new HttpException(

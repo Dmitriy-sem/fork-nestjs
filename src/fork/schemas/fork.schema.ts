@@ -1,7 +1,7 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose'
 import { Document } from 'mongoose'
 import { User } from '../../user/schemas/user.schema'
-import { Schema as MSchema } from 'mongoose'
+import { Types } from 'mongoose'
 import { Category } from 'src/category/schemas/categoty.schema'
 
 export type ForkDocument = Fork & Document
@@ -17,10 +17,10 @@ export class Fork {
     @Prop({ type: Number, required: true })
     year: number
 
-    @Prop({ type: MSchema.Types.ObjectId, ref: 'User' })
+    @Prop({ type: Types.ObjectId, ref: 'User' })
     owner: User
 
-    @Prop({ type: MSchema.Types.ObjectId, ref: 'Category' })
+    @Prop({ type: Types.ObjectId, ref: 'Category' })
     category: Category
 }
 

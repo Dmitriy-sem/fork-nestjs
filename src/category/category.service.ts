@@ -13,7 +13,7 @@ export class CategoryService {
 
     async createCategory(
         data: CreateCategoryDto
-    ): Promise<Category & Document> {
+    ): Promise<Category> {
         return this.categoryModel.create(data)
     }
 }
